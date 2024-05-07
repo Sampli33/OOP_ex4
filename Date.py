@@ -1,4 +1,14 @@
 class Date:
+    """
+    Represents a date in the format 'dd.mm.yyyy'.
+
+    Attributes:
+        formatted_months (list): A list of abbreviated month names in Russian.
+        thirty_one (list): A list of months with 31 days.
+        thirty (list): A list of months with 30 days.
+        day_months (list): A list of days in each month.
+    """
+
     formatted_months = ['янв', 'фев', 'мар', 'апр',
                         'май', 'июн', 'июл', 'авг',
                         'сен', 'окт', 'ноя', 'дек']
@@ -7,6 +17,12 @@ class Date:
     day_months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
     def __init__(self, date):
+        """
+        Initializes a Date object with the provided date string in 'dd.mm.yyyy' format.
+
+        Args:
+            date (str): A string representing the date in 'dd.mm.yyyy' format.
+        """
         try:
             day, month, year = map(str, date.split('.'))
             if len(day) != 2 or len(month) != 2:
@@ -31,6 +47,12 @@ class Date:
 
     @property
     def date(self):
+        """
+        Gets the formatted date string.
+
+        Returns:
+            str: The formatted date string.
+        """
         if self.__date:
             day, month, year = map(int, self.__date.split('.'))
             return f'{day} {Date.formatted_months[month - 1]} {year} г.'
@@ -39,6 +61,12 @@ class Date:
 
     @date.setter
     def date(self, date):
+        """
+        Sets the date.
+
+        Args:
+            date (str): A string representing the date in 'dd.mm.yyyy' format.
+        """
         try:
             day, month, year = map(str, date.split('.'))
             if len(day) != 2 or len(month) != 2:
@@ -62,6 +90,12 @@ class Date:
             print('ошибка')
 
     def to_timestamp(self):
+        """
+        Converts the date to a Unix timestamp.
+
+        Returns:
+            int: The Unix timestamp representing the date.
+        """
         if self.__date:
             day, month, year = map(int, self.__date.split('.'))
             years = year - 1970
@@ -76,24 +110,45 @@ class Date:
             return None
 
     def __lt__(self, other):
+        """
+        Checks if this date is less than another date.
+        """
         return self.to_timestamp() < other.to_timestamp()
 
     def __le__(self, other):
+        """
+        Checks if this date is less than or equal to another date.
+        """
         return self.to_timestamp() <= other.to_timestamp()
 
     def __eq__(self, other):
+        """
+        Checks if this date is equal to another date.
+        """
         return self.to_timestamp() == other.to_timestamp()
 
     def __ne__(self, other):
+        """
+        Checks if this date is not equal to another date.
+        """
         return self.to_timestamp() != other.to_timestamp()
 
     def __gt__(self, other):
+        """
+        Checks if this date is greater than another date.
+        """
         return self.to_timestamp() > other.to_timestamp()
 
     def __ge__(self, other):
+        """
+        Checks if this date is greater than or equal to another date.
+        """
         return self.to_timestamp() >= other.to_timestamp()
 
     def __str__(self):
+        """
+        Returns a string representation of the date.
+        """
         if self.__date:
             return self.__date
         else:

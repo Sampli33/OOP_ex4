@@ -1,7 +1,26 @@
 class User:
+    """
+    Represents a user.
+
+    Attributes:
+        id (str): The user's ID.
+        nick_name (str): The user's nickname.
+        firstname (str): The user's first name.
+        last_name (str): The user's last name.
+        middle_name (str): The user's middle name.
+        gender (str): The user's gender.
+    """
+
     users = []
 
     def __init__(self, info):
+        """
+        Initializes a User object with the provided user information.
+
+        Args:
+            info (list): A list containing user information.
+                         The format is [id, nick_name, firstname, last_name, middle_name, gender].
+        """
         self.id = info[0]
         self.nick_name = info[1]
         self.firstname = info[2]
@@ -11,6 +30,17 @@ class User:
 
     def update(self, id=None, nick_name=None, first_name=None,
                last_name=None, middle_name=None, gender=None):
+        """
+        Updates the user information.
+
+        Args:
+            id (str, optional): The user's ID.
+            nick_name (str, optional): The user's nickname.
+            first_name (str, optional): The user's first name.
+            last_name (str, optional): The user's last name.
+            middle_name (str, optional): The user's middle name.
+            gender (str, optional): The user's gender.
+        """
         if id:
             self.id = id
         if nick_name:
@@ -25,6 +55,12 @@ class User:
             self.gender = gender
 
     def __str__(self):
+        """
+        Returns a string representation of the User object.
+
+        Returns:
+            str: A formatted string representing the user information.
+        """
         output = f'ID: {self.id} Nickname: {self.nick_name} Name: '
         if self.last_name:
             output += f'{self.last_name} '
@@ -37,6 +73,16 @@ class User:
 
 
 class Date:
+    """
+    Represents a date.
+
+    Attributes:
+        formatted_months (list): A list of abbreviated month names in Russian.
+        thirty_one (list): A list of months with 31 days.
+        thirty (list): A list of months with 30 days.
+        day_months (list): A list of days in each month.
+    """
+
     formatted_months = ['янв', 'фев', 'мар', 'апр',
                         'май', 'июн', 'июл', 'авг',
                         'сен', 'окт', 'ноя', 'дек']
@@ -45,6 +91,12 @@ class Date:
     day_months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
     def __init__(self, date):
+        """
+        Initializes a Date object with the provided date string.
+
+        Args:
+            date (str): A string representing the date in 'dd.mm.yyyy' format.
+        """
         try:
             day, month, year = map(str, date.split('.'))
             if len(day) != 2 or len(month) != 2:
@@ -69,6 +121,12 @@ class Date:
 
     @property
     def date(self):
+        """
+        Gets the formatted date string.
+
+        Returns:
+            str: The formatted date string in 'dd MMM yyyy г.' format.
+        """
         if self.__date:
             day, month, year = map(int, self.__date.split('.'))
             return f'{day} {Date.formatted_months[month - 1]} {year} г.'
@@ -77,6 +135,12 @@ class Date:
 
     @date.setter
     def date(self, date):
+        """
+        Sets the date.
+
+        Args:
+            date (str): A string representing the date in 'dd.mm.yyyy' format.
+        """
         try:
             day, month, year = map(str, date.split('.'))
             if len(day) != 2 or len(month) != 2:
@@ -100,6 +164,12 @@ class Date:
             print('ошибка')
 
     def to_timestamp(self):
+        """
+        Converts the date to a Unix timestamp.
+
+        Returns:
+            int: The Unix timestamp representing the date.
+        """
         if self.__date:
             day, month, year = map(int, self.__date.split('.'))
             years = year - 1970
@@ -114,43 +184,93 @@ class Date:
             return None
 
     def __lt__(self, other):
+        """
+        Checks if this date is less than another date.
+
+        Args:
+            other (Date): Another Date object to compare against.
+
+        Returns:
+            bool: True if this date is less than the other date, False otherwise.
+        """
         return self.to_timestamp() < other.to_timestamp()
 
     def __le__(self, other):
+        """
+        Checks if this date is less than or equal to another date.
+        """
         return self.to_timestamp() <= other.to_timestamp()
 
     def __eq__(self, other):
+        """
+        Checks if this date is equal to another date.
+        """
         return self.to_timestamp() == other.to_timestamp()
 
     def __ne__(self, other):
+        """
+        Checks if this date is not equal to another date.
+        """
         return self.to_timestamp() != other.to_timestamp()
 
     def __gt__(self, other):
+        """
+        Checks if this date is greater than another date.
+        """
         return self.to_timestamp() > other.to_timestamp()
 
     def __ge__(self, other):
+        """
+        Checks if this date is greater than or equal to another date.
+        """
         return self.to_timestamp() >= other.to_timestamp()
 
     def __str__(self):
+        """
+        Returns a string representation of the date.
+        """
         if self.__date:
             return self.__date
         else:
             return 'None'
 
     def __repr__(self):
+        """
+        Returns a string representation of the Date object.
+        """
         return self.__str__()
 
 
 class Meeting:
+    """
+    Represents a meeting.
+
+    Attributes:
+        lst_meeting (list): A list to store Meeting objects.
+    """
+
     lst_meeting = []
 
     def __init__(self, info):
+        """
+        Initializes a Meeting object with the provided information.
+
+        Args:
+            info (list): A list containing meeting information.
+                         The format is [id, date, title].
+        """
         self.id = info[0]
         self.date = info[1]
         self.title = info[2]
         self.employees = []
 
     def __str__(self):
+        """
+        Returns a string representation of the Meeting object.
+
+        Returns:
+            str: A formatted string representing the meeting information.
+        """
         output = f'Рабочая встреча {self.count()}\n'
         output += f'{Date(self.date).date} {self.title}\n'
         for pers in self.employees:
@@ -159,6 +279,15 @@ class Meeting:
 
     @classmethod
     def count_meeting(cls, date):
+        """
+        Counts the number of meetings on a given date.
+
+        Args:
+            date (Date): The date to count meetings for.
+
+        Returns:
+            int: The number of meetings on the given date.
+        """
         counter = 0
         for meet in Meeting.lst_meeting:
             if Date(meet.date) == date:
@@ -167,6 +296,12 @@ class Meeting:
 
     @classmethod
     def total(cls):
+        """
+        Counts the total number of employees in all meetings.
+
+        Returns:
+            int: The total number of employees in all meetings.
+        """
         counter = 0
         for meet in Meeting.lst_meeting:
             for _ in meet.employees:
@@ -174,13 +309,31 @@ class Meeting:
         return counter
 
     def add_person(self, person):
+        """
+        Adds a person to the meeting.
+
+        Args:
+            person (User): The user to add to the meeting.
+        """
         self.employees.append(person)
 
     def count(self):
+        """
+        Counts the ID of the meeting.
+
+        Returns:
+            int: The ID of the meeting.
+        """
         return self.id
 
     @classmethod
     def total(cls):
+        """
+        Counts the total number of employees in all meetings.
+
+        Returns:
+            int: The total number of employees in all meetings.
+        """
         counter = 0
         for meet in Meeting.lst_meeting:
             for _ in meet.employees:
@@ -189,8 +342,23 @@ class Meeting:
 
 
 class Load:
+    """
+    Represents a data loader.
+
+    Methods:
+        write(file_name1, file_name2, file_name3): Loads data from files.
+    """
+
     @classmethod
     def write(cls, file_name1, file_name2, file_name3):
+        """
+        Loads data from files.
+
+        Args:
+            file_name1 (str): The name of the file containing meeting data.
+            file_name2 (str): The name of the file containing user data.
+            file_name3 (str): The name of the file containing meeting-person relations.
+        """
         with open(file_name1, 'r', encoding='utf-8') as file:
             atributes = file.readline().split(';')
             for line in file.readlines():
